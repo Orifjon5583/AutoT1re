@@ -2,44 +2,83 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ro'yxatdan o'tish - AutoTire</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-50 flex items-center justify-center min-h-screen">
+<body class="bg-gray-50 flex items-center justify-center min-h-screen p-4">
 
-    <div class="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-md fade-up">
+    <!-- REGISTER KARTASI -->
+    <div class="bg-white p-8 md:p-10 rounded-3xl shadow-2xl w-full max-w-md border border-gray-100 fade-up relative overflow-hidden">
+        
+        <!-- Orqa fon bezagi -->
+        <div class="absolute top-0 left-0 w-full h-2 bg-green-500"></div>
+
+        <!-- Logo va Sarlavha -->
         <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-800">Hisob yaratish</h1>
-            <p class="text-gray-500">AutoTire.uz oilasiga qo'shiling</p>
+            <h1 class="text-2xl font-bold text-gray-800">Yangi hisob yaratish</h1>
+            <p class="text-gray-500 text-sm mt-1">AutoTire oilasiga qo'shiling!</p>
         </div>
 
+        <!-- Forma -->
         <form onsubmit="registerUser(event)" class="space-y-4">
+            
+            <!-- Ism -->
             <div>
-                <label class="block text-sm font-bold text-gray-700 mb-1">Ism Familiya</label>
-                <input type="text" id="reg-name" required class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                <label class="block text-sm font-bold text-gray-700 mb-1 ml-1">Ism Familiya</label>
+                <div class="relative">
+                    <i class="fa-solid fa-user absolute left-4 top-3.5 text-gray-400"></i>
+                    <input type="text" id="reg-name" required placeholder="Ismingizni kiriting" 
+                        class="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 outline-none transition">
+                </div>
             </div>
+
+            <!-- Email -->
             <div>
-                <label class="block text-sm font-bold text-gray-700 mb-1">Email</label>
-                <input type="email" id="reg-email" required class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                <label class="block text-sm font-bold text-gray-700 mb-1 ml-1">Email</label>
+                <div class="relative">
+                    <i class="fa-solid fa-envelope absolute left-4 top-3.5 text-gray-400"></i>
+                    <input type="email" id="reg-email" required placeholder="email@gmail.com" 
+                        class="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 outline-none transition">
+                </div>
             </div>
+
+            <!-- Parol -->
             <div>
-                <label class="block text-sm font-bold text-gray-700 mb-1">Parol o'ylab toping</label>
-                <input type="password" id="reg-pass" required class="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none">
+                <label class="block text-sm font-bold text-gray-700 mb-1 ml-1">Parol o'ylab toping</label>
+                <div class="relative">
+                    <i class="fa-solid fa-lock absolute left-4 top-3.5 text-gray-400"></i>
+                    <input type="password" id="reg-pass" required placeholder="********" 
+                        class="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 outline-none transition">
+                </div>
             </div>
             
-            <button type="submit" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-200 mt-2">
+            <!-- Tugma -->
+            <button type="submit" class="w-full bg-green-600 text-white py-3.5 rounded-xl font-bold hover:bg-green-700 transition shadow-lg shadow-green-200 active:scale-95 mt-2">
                 Ro'yxatdan o'tish
             </button>
         </form>
 
-        <p class="text-center mt-6 text-sm text-gray-600">
-            Hisobingiz bormi? <a href="login.html" class="text-blue-600 font-bold hover:underline">Kirish</a>
-        </p>
-        <p class="text-center mt-2">
-            <a href="index.html" class="text-gray-400 text-xs hover:text-gray-600">Bosh sahifaga qaytish</a>
-        </p>
+        <!-- Pastki qism -->
+        <div class="mt-8 text-center">
+            <p class="text-sm text-gray-600">
+                Hisobingiz bormi? 
+                <a href="login.html" class="text-blue-600 font-bold hover:underline">Kirish</a>
+            </p>
+            
+            <div class="mt-6 pt-6 border-t border-gray-100">
+                <a href="index.html" class="text-gray-400 text-xs hover:text-gray-600 flex items-center justify-center gap-1 transition">
+                    <i class="fa-solid fa-arrow-left"></i> Bosh sahifaga qaytish
+                </a>
+            </div>
+        </div>
+
     </div>
+
+    <!-- Toast Xabar uchun konteyner -->
+    <div id="toast-container"></div>
 
     <script src="script.js"></script>
 </body>

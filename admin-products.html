@@ -2,14 +2,33 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- MUHIM -->
     <title>Admin - Tovarlar</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-100 flex min-h-screen">
+<body class="bg-gray-100 flex flex-col md:flex-row min-h-screen">
 
-    <!-- SIDEBAR -->
+    <!-- MOBIL HEADER (Faqat telefonda ko'rinadi) -->
+    <div class="md:hidden bg-slate-900 text-white p-4 flex justify-between items-center sticky top-0 z-50">
+        <h2 class="text-xl font-bold flex items-center gap-2"><i class="fa-solid fa-shield-halved"></i> Admin</h2>
+        <button onclick="toggleAdminMenu()" class="text-white text-2xl focus:outline-none">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- MOBIL MENYU (Ochiladigan) -->
+    <div id="admin-mobile-menu" class="hidden md:hidden bg-slate-800 text-white p-4 space-y-2">
+        <a href="admin-products.html" class="block py-2 px-4 bg-blue-600 rounded">Tovarlar</a>
+        <a href="admin-orders.html" class="block py-2 px-4 hover:bg-slate-700 rounded">Buyurtmalar</a>
+        <a href="admin-credits.html" class="block py-2 px-4 hover:bg-slate-700 rounded">Kreditlar</a>
+        <hr class="border-slate-600 my-2">
+        <a href="index.html" class="block py-2 px-4 text-gray-400 hover:text-white">Saytga qaytish</a>
+        <button onclick="logout()" class="block w-full text-left py-2 px-4 text-red-400 hover:text-red-300">Chiqish</button>
+    </div>
+
+    <!-- DESKTOP SIDEBAR (Katta ekranda) -->
     <div class="w-64 bg-slate-900 text-white p-6 hidden md:block fixed h-full">
         <h2 class="text-2xl font-bold mb-8 flex items-center gap-2"><i class="fa-solid fa-shield-halved"></i> Admin</h2>
         <ul class="space-y-2">
@@ -22,19 +41,18 @@
     </div>
 
     <!-- MAIN CONTENT -->
-    <div class="flex-1 p-8 md:ml-64 overflow-y-auto">
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-800">Tovarlar Boshqaruvi</h1>
-            <button onclick="logout()" class="md:hidden text-red-500"><i class="fa-solid fa-right-from-bracket"></i></button>
+    <div class="flex-1 p-4 md:p-8 md:ml-64 overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Tovarlar Boshqaruvi</h1>
         </div>
 
         <!-- TOVAR QO'SHISH -->
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 mb-8">
-            <h2 class="text-xl font-bold mb-4 flex items-center gap-2 text-blue-700"><i class="fa-solid fa-plus-circle"></i> Yangi Tovar Qo'shish</h2>
+            <h2 class="text-xl font-bold mb-4 flex items-center gap-2 text-blue-700"><i class="fa-solid fa-plus-circle"></i> Yangi Tovar</h2>
             <form onsubmit="addProduct(event)" class="space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" id="p-tire" placeholder="Shina Brandi (Masalan: Michelin)" required class="w-full p-3 border rounded bg-gray-50">
-                    <input type="text" id="p-size" placeholder="O'lcham (Masalan: 195/65 R15)" required class="w-full p-3 border rounded bg-gray-50">
+                    <input type="text" id="p-tire" placeholder="Shina Brandi (Michelin)" required class="w-full p-3 border rounded bg-gray-50">
+                    <input type="text" id="p-size" placeholder="O'lcham (195/65 R15)" required class="w-full p-3 border rounded bg-gray-50">
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <input type="text" id="p-brand" placeholder="Mashina (Chevrolet)" required class="w-full p-3 border rounded bg-gray-50">

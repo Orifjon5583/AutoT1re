@@ -2,166 +2,133 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- MUHIM -->
     <title>AutoTire - Katalog</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="flex flex-col min-h-screen">
-    <!-- NAVBAR (Nusxa) -->
-   <!-- NAVBAR -->
-<nav class="bg-white shadow-sm sticky top-0 z-50 border-b border-gray-100">
-    <div class="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
-        <a href="index.html" class="flex items-center text-2xl font-bold text-gray-800 tracking-tight">AutoTire<span class="text-blue-600">.uz</span></a>
-        
-        <div class="hidden md:flex space-x-8">
-            <a href="index.html" class="text-blue-600 font-bold">Bosh sahifa</a>
-            <a href="catalog.html" class="text-gray-500 hover:text-blue-600 transition font-medium">Katalog</a>
-        </div>
+<body class="flex flex-col min-h-screen bg-gray-50">
 
-        <div class="flex items-center gap-5">
-            <!-- Savatcha -->
-            <a href="cart.html" class="relative text-gray-500 hover:text-blue-600 transition">
-                <i class="fa-solid fa-cart-shopping text-2xl"></i>
-                <span class="cart-badge absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center hidden border-2 border-white">0</span>
-            </a>
+    <!-- NAVBAR (RESPONSIVE) -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-20">
+                
+                <!-- Logo -->
+                <a href="index.html" class="flex items-center text-2xl font-bold text-gray-800 tracking-tight">
+                    AutoTire<span class="text-blue-600">.uz</span>
+                </a>
 
-            <!-- YANGI: Bildirishnoma (Bell) -->
-            <div id="notification-box" class="relative hidden">
-                <button onclick="toggleNotifDropdown()" class="relative text-gray-500 hover:text-blue-600 transition">
-                    <i class="fa-solid fa-bell text-2xl"></i>
-                    <span id="notif-badge" class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center hidden border-2 border-white">0</span>
-                </button>
-                <!-- Dropdown -->
-                <div id="notif-dropdown" class="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-2xl border border-gray-100 hidden z-50 overflow-hidden">
-                    <div class="p-3 border-b bg-gray-50 font-bold text-gray-700">Bildirishnomalar</div>
-                    <div id="notif-list" class="max-h-64 overflow-y-auto">
-                        <!-- JS to'ldiradi -->
+                <!-- Desktop Menu (Telefonda yashirinadi) -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-gray-500 hover:text-blue-600 transition font-medium">Bosh sahifa</a>
+                    <a href="catalog.html" class="text-blue-600 font-bold">Katalog</a>
+                </div>
+
+                <!-- Icons & Buttons (Desktop) -->
+                <div class="hidden md:flex items-center gap-5">
+                    <a href="cart.html" class="relative text-gray-500 hover:text-blue-600 transition">
+                        <i class="fa-solid fa-cart-shopping text-2xl"></i>
+                        <span class="cart-badge absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center hidden border-2 border-white">0</span>
+                    </a>
+                    
+                    <!-- Bell -->
+                    <div id="notification-box" class="relative hidden">
+                        <button onclick="toggleNotifDropdown()" class="relative text-gray-500 hover:text-blue-600 transition">
+                            <i class="fa-solid fa-bell text-2xl"></i>
+                            <span id="notif-badge" class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center hidden border-2 border-white">0</span>
+                        </button>
+                        <div id="notif-dropdown" class="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-2xl border border-gray-100 hidden z-50 overflow-hidden">
+                            <div class="p-3 border-b bg-gray-50 font-bold text-gray-700">Bildirishnomalar</div>
+                            <div id="notif-list" class="max-h-64 overflow-y-auto"></div>
+                        </div>
+                    </div>
+
+                    <button onclick="openModal()" class="auth-btn bg-blue-50 text-blue-600 px-5 py-2.5 rounded-full font-bold hover:bg-blue-100 transition">Kirish</button>
+                    
+                    <div class="user-profile hidden flex items-center gap-2 bg-gray-50 border border-gray-200 px-4 py-2 rounded-full cursor-pointer">
+                        <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                        <span class="user-name-display font-bold text-sm text-gray-700">User</span>
+                        <button onclick="logout()" class="text-gray-400 hover:text-red-500 ml-2"><i class="fa-solid fa-right-from-bracket"></i></button>
                     </div>
                 </div>
-            </div>
 
-            <!-- Login / Profile -->
-            <button onclick="openModal()" class="auth-btn bg-blue-50 text-blue-600 px-5 py-2.5 rounded-full font-bold hover:bg-blue-100 transition">Kirish</button>
-            <div class="user-profile hidden flex items-center gap-2 bg-gray-50 border border-gray-200 px-4 py-2 rounded-full cursor-pointer">
-                <span class="w-2 h-2 rounded-full bg-green-500"></span>
-                <span class="user-name-display font-bold text-sm text-gray-700">User</span>
-                <button onclick="logout()" class="text-gray-400 hover:text-red-500 ml-2"><i class="fa-solid fa-right-from-bracket"></i></button>
+                <!-- Mobile Menu Button (Faqat telefonda ko'rinadi) -->
+                <div class="md:hidden flex items-center gap-4">
+                    <a href="cart.html" class="relative text-gray-500">
+                        <i class="fa-solid fa-cart-shopping text-xl"></i>
+                        <span class="cart-badge absolute -top-2 -right-2 bg-red-500 text-white text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center hidden">0</span>
+                    </a>
+                    <button onclick="toggleMobileMenu()" class="text-gray-600 hover:text-blue-600 focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
-</nav>
+
+        <!-- Mobile Menu (Ochiladigan qism) -->
+        <div id="mobile-menu" class="hidden flex-col bg-white border-t border-gray-100 md:hidden p-4 space-y-4 shadow-lg absolute w-full z-50">
+            <a href="index.html" class="block text-gray-700 font-bold hover:text-blue-600">Bosh sahifa</a>
+            <a href="catalog.html" class="block text-gray-700 font-bold hover:text-blue-600">Katalog</a>
+            <hr>
+            <button onclick="openModal()" class="auth-btn w-full bg-blue-600 text-white py-3 rounded-xl font-bold">Kirish</button>
+            <div class="user-profile hidden flex justify-between items-center bg-gray-50 p-3 rounded-xl">
+                <span class="user-name-display font-bold text-gray-700">User</span>
+                <button onclick="logout()" class="text-red-500 text-sm font-bold">Chiqish</button>
+            </div>
+        </div>
+    </nav>
 
     <!-- CONTENT -->
-    <div class="max-w-7xl mx-auto px-4 py-12 fade-up">
-        <div class="flex flex-col md:flex-row justify-between items-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-800">Barcha mahsulotlar</h1>
-            <div class="flex gap-2 mt-4 md:mt-0">
-                <button onclick="renderCatalog('all')" class="bg-gray-900 text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-gray-800 transition shadow-lg">Hammasi</button>
-                <button onclick="renderCatalog('Michelin')" class="bg-white border border-gray-200 text-gray-600 px-5 py-2 rounded-full text-sm font-medium hover:bg-gray-50 hover:border-blue-200 transition">Michelin</button>
-                <button onclick="renderCatalog('Continental')" class="bg-white border border-gray-200 text-gray-600 px-5 py-2 rounded-full text-sm font-medium hover:bg-gray-50 hover:border-blue-200 transition">Continental</button>
+    <div class="max-w-7xl mx-auto px-4 py-8 md:py-12 fade-up">
+        <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Barcha mahsulotlar</h1>
+            
+            <!-- Filtrlar (Scroll bo'ladigan) -->
+            <div class="flex gap-2 w-full md:w-auto overflow-x-auto pb-2 no-scrollbar">
+                <button onclick="renderCatalog('all')" class="bg-gray-900 text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-gray-800 transition shadow-lg whitespace-nowrap">Hammasi</button>
+                <button onclick="renderCatalog('Michelin')" class="bg-white border border-gray-200 text-gray-600 px-5 py-2 rounded-full text-sm font-medium hover:bg-gray-50 hover:border-blue-200 transition whitespace-nowrap">Michelin</button>
+                <button onclick="renderCatalog('Continental')" class="bg-white border border-gray-200 text-gray-600 px-5 py-2 rounded-full text-sm font-medium hover:bg-gray-50 hover:border-blue-200 transition whitespace-nowrap">Continental</button>
             </div>
         </div>
-        <div id="catalog-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"></div>
+
+        <!-- GRID (Telefonda 2 ta, Kompyuterda 4 ta) -->
+        <div id="catalog-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
+            <!-- JS orqali to'ldiriladi -->
+        </div>
     </div>
 
-    <!-- MODAL (Nusxa) -->
- <div id="product-modal" class="fixed inset-0 modal-overlay z-[150] hidden flex justify-center items-center p-4">
-        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl relative fade-up modal-content">
+    <!-- LOGIN MODAL -->
+    <div id="login-modal" class="fixed inset-0 modal-overlay z-[100] hidden flex justify-center items-center p-4">
+        <div class="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-sm relative fade-up">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-2xl"></i></button>
+            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Kirish</h2>
+            <form onsubmit="handleLogin(event)">
+                <input type="text" id="login-name" required placeholder="Ismingiz..." class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl mb-4 focus:ring-2 focus:ring-blue-500 outline-none">
+                <button type="submit" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 transition">Davom etish</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAHSULOT MODALI (POPUP) -->
+    <div id="product-modal" class="fixed inset-0 modal-overlay z-[150] hidden flex justify-center items-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl relative fade-up modal-content max-h-[90vh] overflow-y-auto">
             <button onclick="closeProductModal()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 z-10 bg-white rounded-full p-2 shadow-sm transition">
                 <i class="fa-solid fa-xmark text-2xl"></i>
             </button>
-            <div id="product-modal-body" class="p-8"></div>
+            <div id="product-modal-body" class="p-4 md:p-8"></div>
         </div>
     </div>
-    <!-- FOOTER QISMI -->
-<footer class="bg-slate-900 text-gray-300 py-12 mt-auto border-t-4 border-blue-600">
-    <div class="max-w-7xl mx-auto px-4">
-        
-        <!-- Yuqori qism (Grid) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
-            
-            <!-- 1. Brend va Ma'lumot -->
-            <div>
-                <a href="index.html" class="flex items-center text-2xl font-bold text-white mb-4 tracking-tight">
-                    AutoTire<span class="text-blue-500">.uz</span>
-                </a>
-                <p class="text-sm text-gray-400 leading-relaxed mb-4">
-                    Bizning maqsadimiz — avtomobilingiz uchun eng sifatli va ishonchli shinalarni hamyonbop narxlarda yetkazib berish.
-                </p>
-                <div class="flex gap-3">
-                    <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition duration-300">
-                        <i class="fa-brands fa-telegram text-xl"></i>
-                    </a>
-                    <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-pink-600 hover:text-white transition duration-300">
-                        <i class="fa-brands fa-instagram text-xl"></i>
-                    </a>
-                    <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-800 hover:text-white transition duration-300">
-                        <i class="fa-brands fa-facebook-f text-xl"></i>
-                    </a>
-                </div>
-            </div>
 
-            <!-- 2. Tezkor Havolalar -->
-            <div>
-                <h3 class="text-white font-bold text-lg mb-4">Menyu</h3>
-                <ul class="space-y-2 text-sm">
-                    <li><a href="index.html" class="hover:text-blue-500 transition flex items-center gap-2"><i class="fa-solid fa-chevron-right text-xs text-blue-600"></i> Bosh sahifa</a></li>
-                    <li><a href="catalog.html" class="hover:text-blue-500 transition flex items-center gap-2"><i class="fa-solid fa-chevron-right text-xs text-blue-600"></i> Katalog</a></li>
-                    <li><a href="cart.html" class="hover:text-blue-500 transition flex items-center gap-2"><i class="fa-solid fa-chevron-right text-xs text-blue-600"></i> Savatcha</a></li>
-                    <li><a href="#" class="hover:text-blue-500 transition flex items-center gap-2"><i class="fa-solid fa-chevron-right text-xs text-blue-600"></i> Aksiya va Chegirmalar</a></li>
-                </ul>
-            </div>
-
-            <!-- 3. Kontaktlar -->
-            <div>
-                <h3 class="text-white font-bold text-lg mb-4">Bog'lanish</h3>
-                <ul class="space-y-4 text-sm">
-                    <li class="flex items-start gap-3">
-                        <i class="fa-solid fa-location-dot text-blue-500 mt-1"></i>
-                        <span>Toshkent sh., Sergeli tumani, Avtomobillar bozori, 77-do'kon</span>
-                    </li>
-                    <li class="flex items-center gap-3">
-                        <i class="fa-solid fa-phone text-blue-500"></i>
-                        <a href="tel:+998901234567" class="hover:text-white transition">+998 90 123 45 67</a>
-                    </li>
-                    <li class="flex items-center gap-3">
-                        <i class="fa-solid fa-envelope text-blue-500"></i>
-                        <a href="mailto:info@autotire.uz" class="hover:text-white transition">info@autotire.uz</a>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- 4. Ish vaqti -->
-            <div>
-                <h3 class="text-white font-bold text-lg mb-4">Ish vaqti</h3>
-                <ul class="space-y-2 text-sm">
-                    <li class="flex justify-between">
-                        <span>Dushanba - Juma:</span>
-                        <span class="text-white font-medium">09:00 - 19:00</span>
-                    </li>
-                    <li class="flex justify-between">
-                        <span>Shanba:</span>
-                        <span class="text-white font-medium">10:00 - 17:00</span>
-                    </li>
-                    <li class="flex justify-between text-red-400">
-                        <span>Yakshanba:</span>
-                        <span>Dam olish kuni</span>
-                    </li>
-                </ul>
-            </div>
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-gray-300 py-12 mt-auto border-t-4 border-blue-600">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h2 class="text-2xl font-bold text-white mb-4">AutoTire<span class="text-blue-500">.uz</span></h2>
+            <p>&copy; 2024. Barcha huquqlar himoyalangan.</p>
         </div>
+    </footer>
 
-        <!-- Pastki qism (Copyright) -->
-        <div class="border-t border-slate-800 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500">
-            <p>&copy; 2024 AutoTire.uz. Barcha huquqlar himoyalangan.</p>
-            <div class="flex gap-4 mt-4 md:mt-0">
-                <a href="#" class="hover:text-white transition">Maxfiylik siyosati</a>
-                <a href="#" class="hover:text-white transition">Foydalanish shartlari</a>
-            </div>
-        </div>
-    </div>
-</footer>
     <script src="script.js"></script>
 </body>
 </html>

@@ -2,18 +2,29 @@
 // 1. MA'LUMOTLAR BAZASI VA INIT
 // ==========================================
 function initDatabase() {
+    // Eski noto'g'ri rasmlarni tozalash
+    const existing = JSON.parse(localStorage.getItem('products'));
+    if (existing && existing.length > 0 && existing[0].img.includes("amazon")) {
+        localStorage.removeItem('products');
+    }
+
     if (!localStorage.getItem('products')) {
+        const tireImg = "https://images.unsplash.com/photo-1578844251758-2f71da645217?w=500&q=80";
         const defaultProducts = [
-            { id: 1, brand: "Chevrolet", model: "Cobalt", year: 2023, size: "195/65 R15", tireBrand: "Michelin", type: "Yumshoq", price: 75, img: "https://images.unsplash.com/photo-1578844251758-2f71da645217?w=500", rating: 5, warranty: "80,000 km", desc: "Juda yumshoq va shovqinsiz." },
-            { id: 2, brand: "Chevrolet", model: "Gentra", year: 2022, size: "195/55 R15", tireBrand: "Hankook", type: "Zavod", price: 60, img: "https://images.unsplash.com/photo-1578844251758-2f71da645217?w=500", rating: 4, warranty: "50,000 km", desc: "Zavod standarti bo'yicha." }
+            { id: 1, brand: "Chevrolet", model: "Cobalt", year: 2023, size: "195/65 R15", tireBrand: "Michelin", type: "Yumshoq", price: 75, img: tireImg, rating: 5, warranty: "80,000 km", desc: "Juda yumshoq va shovqinsiz." },
+            { id: 2, brand: "Chevrolet", model: "Gentra", year: 2022, size: "195/55 R15", tireBrand: "Hankook", type: "Zavod", price: 60, img: tireImg, rating: 4, warranty: "50,000 km", desc: "Zavod standarti bo'yicha." },
+            { id: 3, brand: "Kia", model: "K5", year: 2023, size: "235/45 R18", tireBrand: "Pirelli", type: "Sport", price: 145, img: tireImg, rating: 5, warranty: "40,000 km", desc: "Yuqori tezlik uchun." },
+            { id: 4, brand: "Toyota", model: "Camry", year: 2021, size: "215/55 R17", tireBrand: "Yokohama", type: "Business", price: 120, img: tireImg, rating: 4.5, warranty: "70,000 km", desc: "Uzoq yo'lga chidamli." },
+            { id: 21, brand: "Chevrolet", model: "Malibu", year: 2022, size: "225/55 R17", tireBrand: "Bridgestone", type: "Comfort", price: 110, img: "https://images.unsplash.com/photo-1580041065738-e72023775cdc?auto=format&fit=crop&w=500&q=80", rating: 4.8, warranty: "70,000 km", desc: "Shovqinsiz va yumshoq yurish uchun ideal." },
+            { id: 22, brand: "Hyundai", model: "Sonata", year: 2023, size: "215/60 R16", tireBrand: "Continental", type: "Premium", price: 125, img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=500&q=80", rating: 5, warranty: "80,000 km", desc: "Yuqori sifatli yo‘l ushlashi bilan mashhur." },
+            { id: 23, brand: "Kia", model: "Sportage", year: 2021, size: "225/60 R17", tireBrand: "Goodyear", type: "All-Terrain", price: 135, img: "https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?auto=format&fit=crop&w=500&q=80", rating: 4.7, warranty: "75,000 km", desc: "Shaharda ham, off-roadda ham barqarorlik beradi." },
+            { id: 24, brand: "Toyota", model: "Rav4", year: 2020, size: "235/55 R18", tireBrand: "Michelin", type: "SUV", price: 150, img: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?auto=format&fit=crop&w=500&q=80", rating: 5, warranty: "90,000 km", desc: "SUV klassiga mos, mustahkam va ishonchli." }
         ];
         localStorage.setItem('products', JSON.stringify(defaultProducts));
     }
     if (!localStorage.getItem('adminUser')) localStorage.setItem('adminUser', JSON.stringify({ email: "admin@autotire.uz", password: "admin" }));
     if (!localStorage.getItem('orders')) localStorage.setItem('orders', JSON.stringify([]));
     if (!localStorage.getItem('credits')) localStorage.setItem('credits', JSON.stringify([]));
-    
-    // YANGI: BILDIRISHNOMALAR BAZASI
     if (!localStorage.getItem('notifications')) localStorage.setItem('notifications', JSON.stringify([]));
 }
 
@@ -67,9 +78,8 @@ function checkAuthUI() {
     const authBtns = document.querySelectorAll(".auth-btn");
     const profiles = document.querySelectorAll(".user-profile");
     const names = document.querySelectorAll(".user-name-display");
-    
-    // Bildirishnoma qutisini ko'rsatish/yashirish
     const notifBox = document.getElementById("notification-box");
+
     if(notifBox) {
         if(user && user.role !== 'admin') notifBox.classList.remove("hidden");
         else notifBox.classList.add("hidden");
@@ -79,7 +89,7 @@ function checkAuthUI() {
         authBtns.forEach(el => el.classList.add("hidden"));
         profiles.forEach(el => el.classList.remove("hidden"));
         names.forEach(el => el.innerText = user.name);
-        checkNotifications(); // Bildirishnomalarni tekshirish
+        checkNotifications();
     } else {
         authBtns.forEach(el => el.classList.remove("hidden"));
         profiles.forEach(el => el.classList.add("hidden"));
@@ -87,156 +97,75 @@ function checkAuthUI() {
 }
 
 // ==========================================
-// 3. BILDIRISHNOMALAR (NOTIFICATIONS) - YANGI
+// 3. BILDIRISHNOMALAR
 // ==========================================
 function checkNotifications() {
     if (!currentUser) return;
     const allNotes = JSON.parse(localStorage.getItem('notifications')) || [];
-    // Faqat shu userga tegishli va o'qilmagan xabarlar
     const myNotes = allNotes.filter(n => n.targetUser === currentUser.name && !n.read);
-    
     const badge = document.getElementById("notif-badge");
     const list = document.getElementById("notif-list");
     
     if (badge) {
-        if (myNotes.length > 0) {
-            badge.innerText = myNotes.length;
-            badge.classList.remove("hidden");
-        } else {
-            badge.classList.add("hidden");
-        }
+        badge.innerText = myNotes.length;
+        badge.classList.toggle("hidden", myNotes.length === 0);
     }
-
     if (list) {
         list.innerHTML = "";
-        if (myNotes.length === 0) {
-            list.innerHTML = `<div class="p-4 text-center text-gray-400 text-sm">Yangi xabarlar yo'q</div>`;
-        } else {
+        if (myNotes.length === 0) list.innerHTML = `<div class="p-4 text-center text-gray-400 text-sm">Yangi xabarlar yo'q</div>`;
+        else {
             myNotes.forEach(n => {
                 const icon = n.type === 'success' ? '<i class="fa-solid fa-circle-check text-green-500"></i>' : '<i class="fa-solid fa-circle-xmark text-red-500"></i>';
-                list.innerHTML += `
-                    <div class="p-3 border-b hover:bg-gray-50 text-sm">
-                        <div class="font-bold flex items-center gap-2">${icon} ${n.title}</div>
-                        <p class="text-gray-600 mt-1">${n.message}</p>
-                        <span class="text-xs text-gray-400 block mt-2">${n.date}</span>
-                    </div>
-                `;
+                list.innerHTML += `<div class="p-3 border-b hover:bg-gray-50 text-sm"><div class="font-bold flex items-center gap-2">${icon} ${n.title}</div><p class="text-gray-600 mt-1">${n.message}</p></div>`;
             });
-            // Hammasini o'qilgan deb belgilash tugmasi
-            list.innerHTML += `<button onclick="markAllRead()" class="w-full text-center text-blue-600 text-xs p-2 hover:bg-blue-50 font-bold">Hammasini o'qilgan deb belgilash</button>`;
+            list.innerHTML += `<button onclick="markAllRead()" class="w-full text-center text-blue-600 text-xs p-2 font-bold">O'qilgan deb belgilash</button>`;
         }
     }
 }
-
-function toggleNotifDropdown() {
-    const dropdown = document.getElementById("notif-dropdown");
-    dropdown.classList.toggle("hidden");
-}
-
+function toggleNotifDropdown() { document.getElementById("notif-dropdown").classList.toggle("hidden"); }
 function markAllRead() {
     let allNotes = JSON.parse(localStorage.getItem('notifications')) || [];
-    allNotes.forEach(n => {
-        if (n.targetUser === currentUser.name) n.read = true;
-    });
+    allNotes.forEach(n => { if (n.targetUser === currentUser.name) n.read = true; });
     localStorage.setItem('notifications', JSON.stringify(allNotes));
     checkNotifications();
 }
 
 // ==========================================
-// 4. ADMIN PANEL (KREDIT STATUSI) - YANGILANGAN
+// 4. ADMIN PANEL
 // ==========================================
 function renderAdminCredits() {
     const credits = JSON.parse(localStorage.getItem('credits')) || [];
     const tbody = document.getElementById("admin-credits-body");
     if (!tbody) return;
-
     tbody.innerHTML = "";
-    if (credits.length === 0) {
-        tbody.innerHTML = "<tr><td colspan='7' class='p-8 text-center text-gray-400'>Kredit arizalari yo'q</td></tr>";
-        return;
-    }
-
+    if (credits.length === 0) { tbody.innerHTML = "<tr><td colspan='7' class='p-8 text-center text-gray-400'>Bo'sh</td></tr>"; return; }
     credits.reverse().forEach(c => {
-        let statusHTML = '';
-        if (c.status === 'Tasdiqlandi') {
-            statusHTML = `<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold">Tasdiqlandi</span>`;
-        } else if (c.status === 'Rad etildi') {
-            statusHTML = `<span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-bold">Rad etildi</span>`;
-        } else {
-            statusHTML = `
-                <div class="flex gap-2">
-                    <button onclick="updateCreditStatus(${c.id}, 'Tasdiqlandi')" class="bg-green-500 text-white w-8 h-8 rounded hover:bg-green-600 transition"><i class="fa-solid fa-check"></i></button>
-                    <button onclick="updateCreditStatus(${c.id}, 'Rad etildi')" class="bg-red-500 text-white w-8 h-8 rounded hover:bg-red-600 transition"><i class="fa-solid fa-xmark"></i></button>
-                </div>
-            `;
-        }
-
-        tbody.innerHTML += `
-            <tr class="border-b hover:bg-gray-50 transition">
-                <td class="p-4 text-gray-500">${c.date}</td>
-                <td class="p-4 font-bold text-gray-800">${c.name}<br><span class="text-xs text-gray-500 font-normal">${c.phone}</span></td>
-                <td class="p-4 text-sm text-gray-600">${c.passport}<br><span class="text-xs text-gray-400">${c.pinfl}</span></td>
-                <td class="p-4 font-bold text-blue-600">$${c.totalWithPercent}</td>
-                <td class="p-4"><span class="bg-gray-100 px-2 py-1 rounded text-xs font-bold">${c.months} oy</span></td>
-                <td class="p-4 font-bold text-red-500 text-sm">${c.endDate}</td>
-                <td class="p-4">${statusHTML}</td>
-            </tr>
-        `;
+        let statusHTML = c.status === 'Tasdiqlandi' ? `<span class="text-green-600 font-bold">Tasdiqlandi</span>` : c.status === 'Rad etildi' ? `<span class="text-red-600 font-bold">Rad etildi</span>` : `<div class="flex gap-2"><button onclick="updateCreditStatus(${c.id}, 'Tasdiqlandi')" class="bg-green-500 text-white w-8 h-8 rounded"><i class="fa-solid fa-check"></i></button><button onclick="updateCreditStatus(${c.id}, 'Rad etildi')" class="bg-red-500 text-white w-8 h-8 rounded"><i class="fa-solid fa-xmark"></i></button></div>`;
+        tbody.innerHTML += `<tr class="border-b hover:bg-gray-50"><td class="p-4">${c.date}</td><td class="p-4 font-bold">${c.name}<br><span class="text-xs text-gray-500">${c.phone}</span></td><td class="p-4 text-sm">${c.passport}</td><td class="p-4 font-bold text-blue-600">$${c.totalWithPercent}</td><td class="p-4">${c.months} oy</td><td class="p-4 text-red-500">${c.endDate}</td><td class="p-4">${statusHTML}</td></tr>`;
     });
 }
-
-// STATUS O'ZGARTIRISH VA BILDIRISHNOMA YUBORISH
 function updateCreditStatus(id, newStatus) {
     let credits = JSON.parse(localStorage.getItem('credits')) || [];
     const index = credits.findIndex(c => c.id === id);
-    
     if (index !== -1) {
         let reason = "";
-        
-        // Agar rad etilsa, sababini so'rash
-        if (newStatus === 'Rad etildi') {
-            reason = prompt("Rad etish sababini yozing (Mijozga ko'rinadi):");
-            if (!reason) return; // Agar yozmasa, bekor qilish
-        }
-
+        if (newStatus === 'Rad etildi') { reason = prompt("Rad etish sababi:"); if (!reason) return; }
         credits[index].status = newStatus;
         localStorage.setItem('credits', JSON.stringify(credits));
-        
-        // BILDIRISHNOMA YARATISH
         let notifications = JSON.parse(localStorage.getItem('notifications')) || [];
-        notifications.push({
-            id: Date.now(),
-            targetUser: credits[index].name, // Kreditdagi ismga yuboramiz
-            type: newStatus === 'Tasdiqlandi' ? 'success' : 'error',
-            title: newStatus === 'Tasdiqlandi' ? 'Kreditingiz Tasdiqlandi! 🎉' : 'Kredit Rad Etildi ❌',
-            message: newStatus === 'Tasdiqlandi' 
-                ? `Tabriklaymiz! Sizning $${credits[index].totalWithPercent} lik arizangiz qabul qilindi. Tez orada aloqaga chiqamiz.` 
-                : `Afsuski, arizangiz rad etildi. Sababi: ${reason}`,
-            date: new Date().toLocaleString(),
-            read: false
-        });
+        notifications.push({ id: Date.now(), targetUser: credits[index].name, type: newStatus === 'Tasdiqlandi' ? 'success' : 'error', title: newStatus === 'Tasdiqlandi' ? 'Tasdiqlandi!' : 'Rad Etildi', message: newStatus === 'Tasdiqlandi' ? `Kreditingiz tasdiqlandi.` : `Sabab: ${reason}`, date: new Date().toLocaleString(), read: false });
         localStorage.setItem('notifications', JSON.stringify(notifications));
-
-        renderAdminCredits();
-        showToast(`Status o'zgardi: ${newStatus}`);
+        renderAdminCredits(); showToast(`Status: ${newStatus}`);
     }
 }
-
-// ==========================================
-// 5. QOLGAN FUNKSIYALAR (O'ZGARISHSIZ)
-// ==========================================
-function renderAdminProducts() {
-    const products = getProducts();
-    const container = document.getElementById("admin-products");
-    if (!container) return;
-    container.innerHTML = "";
-    products.forEach((p, index) => {
-        container.innerHTML += `<div class="flex justify-between items-center bg-gray-50 p-3 rounded mb-2 border border-gray-200"><div class="text-sm"><strong>${p.tireBrand}</strong> ${p.size} <br><span class="text-gray-500">${p.brand} ${p.model} - $${p.price}</span></div><button onclick="deleteProduct(${index})" class="text-red-500 p-2"><i class="fa-solid fa-trash"></i></button></div>`;
-    });
-}
+function renderAdminProducts() { const products = getProducts(); const container = document.getElementById("admin-products"); if (!container) return; container.innerHTML = ""; products.forEach((p, index) => { container.innerHTML += `<div class="flex justify-between items-center bg-gray-50 p-3 rounded mb-2 border"><div class="text-sm"><strong>${p.tireBrand}</strong> ${p.size} <br><span class="text-gray-500">${p.brand} ${p.model} - $${p.price}</span></div><button onclick="deleteProduct(${index})" class="text-red-500 p-2"><i class="fa-solid fa-trash"></i></button></div>`; }); }
 function addProduct(e) { e.preventDefault(); const brand = document.getElementById("p-brand").value; const model = document.getElementById("p-model").value; const tireBrand = document.getElementById("p-tire").value; const size = document.getElementById("p-size").value; const price = document.getElementById("p-price").value; let products = getProducts(); const newId = products.length > 0 ? products[products.length - 1].id + 1 : 1; products.push({ id: newId, brand, model, year: 2024, size, tireBrand, price: parseInt(price), type: "Yangi", rating: 5, warranty: "Yangi", img: "https://images.unsplash.com/photo-1578844251758-2f71da645217?w=500", desc: "Admin qo'shdi." }); localStorage.setItem('products', JSON.stringify(products)); showToast("Qo'shildi!"); e.target.reset(); renderAdminProducts(); }
 function deleteProduct(index) { if(confirm("O'chirasizmi?")) { let p = getProducts(); p.splice(index, 1); localStorage.setItem('products', JSON.stringify(p)); renderAdminProducts(); } }
-function renderAdminOrders() { const orders = JSON.parse(localStorage.getItem('orders')) || []; const container = document.getElementById("admin-orders"); if (!container) return; container.innerHTML = ""; if (orders.length === 0) { container.innerHTML = "<p class='text-gray-400 text-center'>Buyurtmalar yo'q</p>"; return; } orders.reverse().forEach(o => { container.innerHTML += `<div class="bg-white p-4 rounded-xl shadow-sm mb-3 border border-gray-200"><div class="flex justify-between mb-2 border-b pb-2"><span class="font-bold text-blue-600">#${o.id}</span><span class="text-xs text-gray-500">${o.date}</span></div><h4 class="font-bold">${o.customer.name}</h4><p class="text-sm text-gray-600">${o.customer.phone} | ${o.customer.address}</p><div class="bg-gray-50 p-2 rounded text-sm mt-2"><strong>Jami: $${o.total}</strong> | ${o.customer.payment}</div></div>`; }); }
+function renderAdminOrders() { const orders = JSON.parse(localStorage.getItem('orders')) || []; const container = document.getElementById("admin-orders"); if (!container) return; container.innerHTML = ""; if (orders.length === 0) { container.innerHTML = "<p class='text-gray-400 text-center'>Bo'sh</p>"; return; } orders.reverse().forEach(o => { container.innerHTML += `<div class="bg-white p-4 rounded shadow mb-3 border"><div class="flex justify-between mb-2 border-b pb-2"><span class="font-bold text-blue-600">#${o.id}</span><span class="text-xs text-gray-500">${o.date}</span></div><h4 class="font-bold">${o.customer.name}</h4><p class="text-sm text-gray-600">${o.customer.phone}</p><div class="bg-gray-50 p-2 rounded text-sm mt-2"><strong>Jami: $${o.total}</strong> | ${o.customer.payment}</div></div>`; }); }
+
+// ==========================================
+// 5. USER FUNKSIYALARI
+// ==========================================
 function setupSearch() { const b = document.getElementById("brand"), m = document.getElementById("model"), y = document.getElementById("year"), p = getProducts(); [...new Set(p.map(x=>x.brand))].forEach(x=>b.add(new Option(x,x))); b.onchange=()=>{ m.innerHTML='<option value="">Model...</option>'; m.disabled=true; y.innerHTML='<option value="">Yil...</option>'; y.disabled=true; [...new Set(p.filter(x=>x.brand===b.value).map(x=>x.model))].forEach(x=>{m.disabled=false;m.add(new Option(x,x))}); }; m.onchange=()=>{ y.innerHTML='<option value="">Yil...</option>'; y.disabled=true; [...new Set(p.filter(x=>x.brand===b.value&&x.model===m.value).map(x=>x.year))].forEach(x=>{y.disabled=false;y.add(new Option(x,x))}); }; }
 function findTires() { const b=document.getElementById("brand").value, m=document.getElementById("model").value, y=document.getElementById("year").value, g=document.getElementById("results-grid"), r=document.getElementById("search-results"); if(!b||!m) return showToast("Tanlang!", "error"); g.innerHTML=""; r.classList.remove("hidden"); let res = getProducts().filter(p=>p.brand===b && p.model===m); if(y) res = res.filter(p=>p.year==y); res.forEach(t=>g.innerHTML+=createCard(t)); setTimeout(()=>r.scrollIntoView({behavior:'smooth'}),100); }
 function renderCatalog(f='all') { const g=document.getElementById("catalog-grid"); if(!g)return; g.innerHTML=""; let i=getProducts(); if(f!=='all')i=i.filter(x=>x.tireBrand===f); i.forEach(t=>g.innerHTML+=createCard(t)); }
@@ -255,9 +184,35 @@ function submitOrder(e){e.preventDefault(); const n=document.getElementById("ord
 function initCreditPage() { const c=JSON.parse(localStorage.getItem('cart'))||[]; let t=0; if(c.length>0){t=c.reduce((s,i)=>s+i.price*i.quantity,0);document.getElementById("credit-product-name").innerText=`${c.length} ta mahsulot`;document.getElementById("credit-total").innerText="$"+t;}else{document.getElementById("credit-product-name").innerText="Bo'sh";} window.creditTotal=t; }
 function calculateCredit() { const m=parseInt(document.getElementById("credit-months").value), t=window.creditTotal||0, p=0.03, twp=t+(t*p*m), mp=twp/m; document.getElementById("monthly-pay").innerText="$"+mp.toFixed(2); document.getElementById("total-pay").innerText="$"+twp.toFixed(2); return {totalWithPercent:twp.toFixed(2),monthly:mp.toFixed(2)}; }
 function submitCredit(e) { e.preventDefault(); const n=document.getElementById("cr-name").value, pass=document.getElementById("cr-passport").value, pin=document.getElementById("cr-pinfl").value, ph=document.getElementById("cr-phone").value, m=parseInt(document.getElementById("credit-months").value), td=new Date(), ed=new Date(); ed.setMonth(td.getMonth()+m); const c=calculateCredit(), nc={id:Date.now(),date:td.toLocaleDateString(),endDate:ed.toLocaleDateString(),name:n,passport:pass,pinfl:pin,phone:ph,months:m,totalWithPercent:c.totalWithPercent,monthly:c.monthly,items:JSON.parse(localStorage.getItem('cart'))||[], status: 'Kutilmoqda'}; let cr=JSON.parse(localStorage.getItem('credits'))||[]; cr.push(nc); localStorage.setItem('credits',JSON.stringify(cr)); localStorage.setItem('cart',JSON.stringify([])); showToast("Ariza yuborildi!"); setTimeout(()=>window.location.href="index.html",2000); }
-function showToast(m,t='success'){let b=document.getElementById('toast-container');if(!b){b=document.createElement('div');b.id='toast-container';b.style.cssText="position:fixed;bottom:20px;right:20px;z-index:9999";document.body.appendChild(b);}const d=document.createElement('div');d.className=`bg-white border-l-4 ${t==='error'?'border-red-500':'border-green-500'} p-4 rounded shadow-lg mt-2 flex items-center gap-2 animate-bounce`;d.innerHTML=m;b.appendChild(d);setTimeout(()=>d.remove(),3000);}
+function showToast(m,t='success'){let b=document.getElementById('toast-container');if(!b){b=document.createElement('div');b.id='toast-container';b.style.cssText="position:fixed;bottom:20px;right:20px;z-index:9999";document.body.appendChild(b);}const d=document.createElement('div');d.className=`bg-white border-l-4 ${t==='error'?'border-red-500':'border-green-500'} p-4 rounded shadow-lg mt-2 animate-bounce`;d.innerHTML=m;b.appendChild(d);setTimeout(()=>d.remove(),3000);}
 function openModal(){if(document.getElementById("login-modal"))document.getElementById("login-modal").classList.remove("hidden");}
 function closeModal(){if(document.getElementById("login-modal"))document.getElementById("login-modal").classList.add("hidden");}
+
+// ==========================================
+// 6. MOBIL MENYU (YANGI)
+// ==========================================
+function toggleMobileMenu() {
+    const menu = document.getElementById("mobile-menu");
+    if (menu.classList.contains("hidden")) {
+        menu.classList.remove("hidden");
+        menu.classList.add("flex");
+    } else {
+        menu.classList.add("hidden");
+        menu.classList.remove("flex");
+    }
+}
+
+// ==========================================
+// 7. ADMIN MOBIL MENYU (YANGI - SIZ SO'RAGAN QISM)
+// ==========================================
+function toggleAdminMenu() {
+    const menu = document.getElementById("admin-mobile-menu");
+    if (menu.classList.contains("hidden")) {
+        menu.classList.remove("hidden");
+    } else {
+        menu.classList.add("hidden");
+    }
+}
 
 // GLOBAL INIT
 document.addEventListener("DOMContentLoaded", () => {

@@ -10,47 +10,70 @@
 
     <!-- Navbar nusxasi -->
 <!-- NAVBAR -->
-<nav class="bg-white shadow-sm sticky top-0 z-50 border-b border-gray-100">
-    <div class="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
-        <a href="index.html" class="flex items-center text-2xl font-bold text-gray-800 tracking-tight">AutoTire<span class="text-blue-600">.uz</span></a>
-        
-        <div class="hidden md:flex space-x-8">
-            <a href="index.html" class="text-blue-600 font-bold">Bosh sahifa</a>
-            <a href="catalog.html" class="text-gray-500 hover:text-blue-600 transition font-medium">Katalog</a>
-        </div>
+    <!-- NAVBAR (RESPONSIVE) -->
+  <nav class="bg-white shadow-sm sticky top-0 z-50 border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex items-center text-2xl font-bold text-gray-800 tracking-tight">AutoTire<span class="text-blue-600">.uz</span></a>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-blue-600 font-bold">Bosh sahifa</a>
+                    <a href="catalog.html" class="text-gray-500 hover:text-blue-600 transition font-medium">Katalog</a>
+                </div>
 
-        <div class="flex items-center gap-5">
-            <!-- Savatcha -->
-            <a href="cart.html" class="relative text-gray-500 hover:text-blue-600 transition">
-                <i class="fa-solid fa-cart-shopping text-2xl"></i>
-                <span class="cart-badge absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center hidden border-2 border-white">0</span>
-            </a>
+                <!-- Icons & Buttons -->
+                <div class="hidden md:flex items-center gap-5">
+                    <a href="cart.html" class="relative text-gray-500 hover:text-blue-600 transition">
+                        <i class="fa-solid fa-cart-shopping text-2xl"></i>
+                        <span class="cart-badge absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center hidden border-2 border-white">0</span>
+                    </a>
+                    
+                    <!-- Bell -->
+                    <div id="notification-box" class="relative hidden">
+                        <button onclick="toggleNotifDropdown()" class="relative text-gray-500 hover:text-blue-600 transition">
+                            <i class="fa-solid fa-bell text-2xl"></i>
+                            <span id="notif-badge" class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center hidden border-2 border-white">0</span>
+                        </button>
+                        <div id="notif-dropdown" class="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-2xl border border-gray-100 hidden z-50 overflow-hidden">
+                            <div class="p-3 border-b bg-gray-50 font-bold text-gray-700">Bildirishnomalar</div>
+                            <div id="notif-list" class="max-h-64 overflow-y-auto"></div>
+                        </div>
+                    </div>
 
-            <!-- YANGI: Bildirishnoma (Bell) -->
-            <div id="notification-box" class="relative hidden">
-                <button onclick="toggleNotifDropdown()" class="relative text-gray-500 hover:text-blue-600 transition">
-                    <i class="fa-solid fa-bell text-2xl"></i>
-                    <span id="notif-badge" class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center hidden border-2 border-white">0</span>
-                </button>
-                <!-- Dropdown -->
-                <div id="notif-dropdown" class="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-2xl border border-gray-100 hidden z-50 overflow-hidden">
-                    <div class="p-3 border-b bg-gray-50 font-bold text-gray-700">Bildirishnomalar</div>
-                    <div id="notif-list" class="max-h-64 overflow-y-auto">
-                        <!-- JS to'ldiradi -->
+                    <button onclick="openModal()" class="auth-btn bg-blue-50 text-blue-600 px-5 py-2.5 rounded-full font-bold hover:bg-blue-100 transition">Kirish</button>
+                    <div class="user-profile hidden flex items-center gap-2 bg-gray-50 border border-gray-200 px-4 py-2 rounded-full cursor-pointer">
+                        <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                        <span class="user-name-display font-bold text-sm text-gray-700">User</span>
+                        <button onclick="logout()" class="text-gray-400 hover:text-red-500 ml-2"><i class="fa-solid fa-right-from-bracket"></i></button>
                     </div>
                 </div>
-            </div>
 
-            <!-- Login / Profile -->
-            <button onclick="openModal()" class="auth-btn bg-blue-50 text-blue-600 px-5 py-2.5 rounded-full font-bold hover:bg-blue-100 transition">Kirish</button>
-            <div class="user-profile hidden flex items-center gap-2 bg-gray-50 border border-gray-200 px-4 py-2 rounded-full cursor-pointer">
-                <span class="w-2 h-2 rounded-full bg-green-500"></span>
-                <span class="user-name-display font-bold text-sm text-gray-700">User</span>
-                <button onclick="logout()" class="text-gray-400 hover:text-red-500 ml-2"><i class="fa-solid fa-right-from-bracket"></i></button>
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center gap-4">
+                    <a href="cart.html" class="relative text-gray-500">
+                        <i class="fa-solid fa-cart-shopping text-xl"></i>
+                        <span class="cart-badge absolute -top-2 -right-2 bg-red-500 text-white text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center hidden">0</span>
+                    </a>
+                    <button onclick="toggleMobileMenu()" class="text-gray-600 hover:text-blue-600 focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
-</nav>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden flex-col bg-white border-t border-gray-100 md:hidden p-4 space-y-4 shadow-lg absolute w-full z-50">
+            <a href="index.html" class="block text-gray-700 font-bold hover:text-blue-600">Bosh sahifa</a>
+            <a href="catalog.html" class="block text-gray-700 font-bold hover:text-blue-600">Katalog</a>
+            <hr>
+            <button onclick="openModal()" class="auth-btn w-full bg-blue-600 text-white py-3 rounded-xl font-bold">Kirish</button>
+            <div class="user-profile hidden flex justify-between items-center bg-gray-50 p-3 rounded-xl">
+                <span class="user-name-display font-bold text-gray-700">User</span>
+                <button onclick="logout()" class="text-red-500 text-sm font-bold">Chiqish</button>
+            </div>
+        </div>
+    </nav>
 
     <div class="flex-grow flex items-center justify-center p-4">
         <div class="bg-white p-8 rounded-3xl shadow-xl w-full max-w-2xl fade-up">
