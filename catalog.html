@@ -2,7 +2,7 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- MUHIM -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AutoTire - Katalog</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -10,30 +10,20 @@
 </head>
 <body class="flex flex-col min-h-screen bg-gray-50">
 
-    <!-- NAVBAR (RESPONSIVE) -->
+    <!-- NAVBAR (Index bilan bir xil) -->
     <nav class="bg-white shadow-sm sticky top-0 z-50 border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex justify-between items-center h-20">
-                
-                <!-- Logo -->
-                <a href="index.html" class="flex items-center text-2xl font-bold text-gray-800 tracking-tight">
-                    AutoTire<span class="text-blue-600">.uz</span>
-                </a>
-
-                <!-- Desktop Menu (Telefonda yashirinadi) -->
+                <a href="index.html" class="flex items-center text-2xl font-bold text-gray-800 tracking-tight">AutoTire<span class="text-blue-600">.uz</span></a>
                 <div class="hidden md:flex space-x-8">
                     <a href="index.html" class="text-gray-500 hover:text-blue-600 transition font-medium">Bosh sahifa</a>
                     <a href="catalog.html" class="text-blue-600 font-bold">Katalog</a>
                 </div>
-
-                <!-- Icons & Buttons (Desktop) -->
                 <div class="hidden md:flex items-center gap-5">
                     <a href="cart.html" class="relative text-gray-500 hover:text-blue-600 transition">
                         <i class="fa-solid fa-cart-shopping text-2xl"></i>
                         <span class="cart-badge absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center hidden border-2 border-white">0</span>
                     </a>
-                    
-                    <!-- Bell -->
                     <div id="notification-box" class="relative hidden">
                         <button onclick="toggleNotifDropdown()" class="relative text-gray-500 hover:text-blue-600 transition">
                             <i class="fa-solid fa-bell text-2xl"></i>
@@ -44,35 +34,27 @@
                             <div id="notif-list" class="max-h-64 overflow-y-auto"></div>
                         </div>
                     </div>
-
-                    <button onclick="openModal()" class="auth-btn bg-blue-50 text-blue-600 px-5 py-2.5 rounded-full font-bold hover:bg-blue-100 transition">Kirish</button>
-                    
+                    <a href="login.html" class="auth-btn bg-blue-50 text-blue-600 px-5 py-2.5 rounded-full font-bold hover:bg-blue-100 transition flex items-center">Kirish</a>
                     <div class="user-profile hidden flex items-center gap-2 bg-gray-50 border border-gray-200 px-4 py-2 rounded-full cursor-pointer">
                         <span class="w-2 h-2 rounded-full bg-green-500"></span>
                         <span class="user-name-display font-bold text-sm text-gray-700">User</span>
                         <button onclick="logout()" class="text-gray-400 hover:text-red-500 ml-2"><i class="fa-solid fa-right-from-bracket"></i></button>
                     </div>
                 </div>
-
-                <!-- Mobile Menu Button (Faqat telefonda ko'rinadi) -->
                 <div class="md:hidden flex items-center gap-4">
                     <a href="cart.html" class="relative text-gray-500">
                         <i class="fa-solid fa-cart-shopping text-xl"></i>
                         <span class="cart-badge absolute -top-2 -right-2 bg-red-500 text-white text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center hidden">0</span>
                     </a>
-                    <button onclick="toggleMobileMenu()" class="text-gray-600 hover:text-blue-600 focus:outline-none">
-                        <i class="fa-solid fa-bars text-2xl"></i>
-                    </button>
+                    <button onclick="toggleMobileMenu()" class="text-gray-600 hover:text-blue-600 focus:outline-none"><i class="fa-solid fa-bars text-2xl"></i></button>
                 </div>
             </div>
         </div>
-
-        <!-- Mobile Menu (Ochiladigan qism) -->
         <div id="mobile-menu" class="hidden flex-col bg-white border-t border-gray-100 md:hidden p-4 space-y-4 shadow-lg absolute w-full z-50">
             <a href="index.html" class="block text-gray-700 font-bold hover:text-blue-600">Bosh sahifa</a>
             <a href="catalog.html" class="block text-gray-700 font-bold hover:text-blue-600">Katalog</a>
             <hr>
-            <button onclick="openModal()" class="auth-btn w-full bg-blue-600 text-white py-3 rounded-xl font-bold">Kirish</button>
+            <a href="login.html" class="auth-btn block w-full bg-blue-600 text-white py-3 rounded-xl font-bold text-center">Kirish</a>
             <div class="user-profile hidden flex justify-between items-center bg-gray-50 p-3 rounded-xl">
                 <span class="user-name-display font-bold text-gray-700">User</span>
                 <button onclick="logout()" class="text-red-500 text-sm font-bold">Chiqish</button>
@@ -84,41 +66,27 @@
     <div class="max-w-7xl mx-auto px-4 py-8 md:py-12 fade-up">
         <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
             <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Barcha mahsulotlar</h1>
-            
-            <!-- Filtrlar (Scroll bo'ladigan) -->
             <div class="flex gap-2 w-full md:w-auto overflow-x-auto pb-2 no-scrollbar">
                 <button onclick="renderCatalog('all')" class="bg-gray-900 text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-gray-800 transition shadow-lg whitespace-nowrap">Hammasi</button>
                 <button onclick="renderCatalog('Michelin')" class="bg-white border border-gray-200 text-gray-600 px-5 py-2 rounded-full text-sm font-medium hover:bg-gray-50 hover:border-blue-200 transition whitespace-nowrap">Michelin</button>
                 <button onclick="renderCatalog('Continental')" class="bg-white border border-gray-200 text-gray-600 px-5 py-2 rounded-full text-sm font-medium hover:bg-gray-50 hover:border-blue-200 transition whitespace-nowrap">Continental</button>
             </div>
         </div>
-
-        <!-- GRID (Telefonda 2 ta, Kompyuterda 4 ta) -->
-        <div id="catalog-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
-            <!-- JS orqali to'ldiriladi -->
-        </div>
+        <div id="catalog-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8"></div>
     </div>
 
-    <!-- LOGIN MODAL -->
-    <div id="login-modal" class="fixed inset-0 modal-overlay z-[100] hidden flex justify-center items-center p-4">
-        <div class="bg-white p-8 rounded-3xl shadow-2xl w-full max-w-sm relative fade-up">
-            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-2xl"></i></button>
-            <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Kirish</h2>
-            <form onsubmit="handleLogin(event)">
-                <input type="text" id="login-name" required placeholder="Ismingiz..." class="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl mb-4 focus:ring-2 focus:ring-blue-500 outline-none">
-                <button type="submit" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 transition">Davom etish</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- MAHSULOT MODALI (POPUP) -->
+    <!-- MAHSULOT MODALI -->
     <div id="product-modal" class="fixed inset-0 modal-overlay z-[150] hidden flex justify-center items-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl relative fade-up modal-content max-h-[90vh] overflow-y-auto">
-            <button onclick="closeProductModal()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 z-10 bg-white rounded-full p-2 shadow-sm transition">
-                <i class="fa-solid fa-xmark text-2xl"></i>
-            </button>
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 text-gray-400 hover:text-red-500 z-10 bg-white rounded-full p-2 shadow-sm transition"><i class="fa-solid fa-xmark text-2xl"></i></button>
             <div id="product-modal-body" class="p-4 md:p-8"></div>
         </div>
+    </div>
+
+    <!-- FLOATING WIDGET -->
+    <div class="fixed bottom-6 right-6 z-40 flex flex-col gap-3">
+        <a href="#" class="w-12 h-12 bg-blue-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-blue-600 transition hover:-translate-y-1"><i class="fa-brands fa-telegram text-2xl"></i></a>
+        <a href="tel:+998901234567" class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-green-600 transition hover:-translate-y-1 animate-bounce"><i class="fa-solid fa-phone text-xl"></i></a>
     </div>
 
     <!-- FOOTER -->
