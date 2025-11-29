@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --text-main: #0f172a;
+    --bg-body: #ffffff;
+    --star-color: #f59e0b; /* Sariq (yulduz uchun) */
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-main);
+}
+
+/* --- SCROLLBAR --- */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f1f5f9; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+/* --- HERO --- */
+.hero-bg {
+    background-image: linear-gradient(135deg, rgba(37, 99, 235, 0.9), rgba(30, 64, 175, 0.8)), 
+                      url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+    background-size: cover;
+    background-position: center;
+    min-height: 550px;
+}
+
+/* --- KARTALAR --- */
+.card-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid #e2e8f0;
+    cursor: pointer; /* Bosilishi mumkinligini bildirish */
+}
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.15);
+    border-color: var(--primary);
+}
+
+.img-mix { mix-blend-mode: multiply; filter: contrast(1.05); }
+
+/* --- MODAL (POPUP) --- */
+.modal-overlay {
+    background-color: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(5px);
+}
+.modal-content {
+    max-height: 90vh; /* Ekranda sig'ishi uchun */
+    overflow-y: auto; /* Agar ma'lumot ko'p bo'lsa scroll bo'ladi */
+}
+
+/* --- YULDUZLAR (RATING) --- */
+.star { color: #e2e8f0; font-size: 14px; }
+.star.filled { color: var(--star-color); }
+
+/* --- IZOHLAR (REVIEWS) --- */
+.review-item {
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+}
+.review-item:last-child { border: none; }
+
+/* --- TOAST --- */
+#toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 9999; }
+.toast {
+    background: white; border-left: 4px solid var(--primary);
+    padding: 16px 20px; border-radius: 12px;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+    margin-top: 10px; display: flex; align-items: center; gap: 12px;
+    animation: slideIn 0.4s ease-out forwards;
+}
+.toast.error { border-left-color: #ef4444; }
+@keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }

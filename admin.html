@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Panel - AutoTire</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-100 flex min-h-screen">
+
+    <!-- Sidebar -->
+    <div class="w-64 bg-slate-900 text-white p-6 hidden md:block fixed h-full">
+        <h2 class="text-2xl font-bold mb-8 flex items-center gap-2">
+            <i class="fa-solid fa-shield-halved"></i> Admin
+        </h2>
+        <ul class="space-y-2">
+            <li><a href="admin-orders.html" class="block py-2 px-4 hover:bg-blue-600 rounded transition"><i class="fa-solid fa-cart-shopping mr-2"></i> Buyurtmalar</a></li>
+            <li><a href="admin-products.html" class="block py-2 px-4 hover:bg-blue-600 rounded transition"><i class="fa-solid fa-box mr-2"></i> Tovarlar</a></li>
+            <!-- YANGI MENYU -->
+            <li><a href="admin-credits.html" class="block py-2 px-4 bg-blue-700 rounded transition shadow"><i class="fa-solid fa-file-invoice-dollar mr-2"></i> Kreditlar</a></li>
+            
+            <li class="mt-8 border-t border-slate-700 pt-4">
+                <a href="index.html" class="block py-2 px-4 hover:bg-slate-800 rounded text-gray-400"><i class="fa-solid fa-arrow-left mr-2"></i> Saytga qaytish</a>
+            </li>
+            <li><button onclick="logout()" class="w-full text-left py-2 px-4 hover:bg-red-600 rounded text-red-200"><i class="fa-solid fa-right-from-bracket mr-2"></i> Chiqish</button></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div id="admin-dashboard" class="flex-1 p-8 md:ml-64 overflow-y-auto">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Boshqaruv Paneli</h1>
+            <div class="flex items-center gap-3">
+                <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-bold">Admin</span>
+                <button onclick="logout()" class="md:hidden text-red-500"><i class="fa-solid fa-right-from-bracket"></i></button>
+            </div>
+        </div>
+
+        <!-- 1. KREDITLAR BO'LIMI (YANGI) -->
+        <div id="credits" class="bg-white p-6 rounded-2xl shadow-sm mb-8 border border-gray-200">
+            <h2 class="text-xl font-bold mb-4 flex items-center gap-2 text-blue-800">
+                <i class="fa-solid fa-file-contract"></i> Kredit Arizalari
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-gray-50 text-gray-600 text-sm uppercase">
+                        <tr>
+                            <th class="p-3 border-b">Sana</th>
+                            <th class="p-3 border-b">Mijoz (Tel)</th>
+                            <th class="p-3 border-b">Pasport / PFL</th>
+                            <th class="p-3 border-b">Summa</th>
+                            <th class="p-3 border-b">Muddat</th>
+                            <th class="p-3 border-b">Tugash Sanasi</th>
+                            <th class="p-3 border-b">Holat</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-credits-body" class="text-sm">
+                        <!-- JS to'ldiradi -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- 2. Tovar Qo'shish -->
+            <div id="products" class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+                <h2 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-plus-circle text-blue-600"></i> Tovar qo'shish</h2>
+                <form onsubmit="addProduct(event)" class="space-y-3">
+                    <input type="text" id="p-tire" placeholder="Shina Brandi (Michelin)" required class="w-full p-3 border rounded bg-gray-50">
+                    <div class="grid grid-cols-2 gap-3">
+                        <input type="text" id="p-brand" placeholder="Mashina (Chevrolet)" required class="w-full p-3 border rounded bg-gray-50">
+                        <input type="text" id="p-model" placeholder="Model (Gentra)" required class="w-full p-3 border rounded bg-gray-50">
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <input type="text" id="p-size" placeholder="O'lcham (195/65 R15)" required class="w-full p-3 border rounded bg-gray-50">
+                        <input type="number" id="p-price" placeholder="Narx ($)" required class="w-full p-3 border rounded bg-gray-50">
+                    </div>
+                    <button type="submit" class="w-full bg-green-600 text-white py-3 rounded font-bold hover:bg-green-700 transition">Qo'shish</button>
+                </form>
+                <div class="mt-6 border-t pt-4">
+                    <h3 class="font-bold mb-2 text-gray-500 text-xs uppercase">Mavjud tovarlar</h3>
+                    <div id="admin-products" class="h-40 overflow-y-auto text-sm space-y-2"></div>
+                </div>
+            </div>
+
+            <!-- 3. Buyurtmalar -->
+            <div id="orders" class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
+                <h2 class="text-xl font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-list text-blue-600"></i> Oddiy Buyurtmalar</h2>
+                <div id="admin-orders" class="h-[400px] overflow-y-auto bg-gray-50 p-4 rounded-xl space-y-3">
+                    <!-- JS to'ldiradi -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

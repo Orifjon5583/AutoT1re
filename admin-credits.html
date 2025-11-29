@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Kreditlar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-100 flex min-h-screen">
+
+    <!-- SIDEBAR -->
+    <div class="w-64 bg-slate-900 text-white p-6 hidden md:block fixed h-full">
+        <h2 class="text-2xl font-bold mb-8 flex items-center gap-2"><i class="fa-solid fa-shield-halved"></i> Admin</h2>
+        <ul class="space-y-2">
+            <li><a href="admin-products.html" class="block py-2 px-4 hover:bg-slate-800 rounded transition"><i class="fa-solid fa-box mr-2"></i> Tovarlar</a></li>
+            <li><a href="admin-orders.html" class="block py-2 px-4 hover:bg-slate-800 rounded transition"><i class="fa-solid fa-cart-shopping mr-2"></i> Buyurtmalar</a></li>
+            <li><a href="admin-credits.html" class="block py-2 px-4 bg-blue-600 rounded transition"><i class="fa-solid fa-file-invoice-dollar mr-2"></i> Kreditlar</a></li>
+            <li class="mt-8 border-t border-slate-700 pt-4"><a href="index.html" class="block py-2 px-4 hover:bg-slate-800 rounded text-gray-400"><i class="fa-solid fa-arrow-left mr-2"></i> Saytga qaytish</a></li>
+            <li><button onclick="logout()" class="w-full text-left py-2 px-4 hover:bg-red-600 rounded text-red-200"><i class="fa-solid fa-right-from-bracket mr-2"></i> Chiqish</button></li>
+        </ul>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="flex-1 p-8 md:ml-64 overflow-y-auto">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Kredit Arizalari</h1>
+            <button onclick="logout()" class="md:hidden text-red-500"><i class="fa-solid fa-right-from-bracket"></i></button>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200 overflow-x-auto">
+            <table class="w-full text-left border-collapse min-w-[800px]">
+                <thead class="bg-gray-50 text-gray-600 text-sm uppercase">
+                    <tr>
+                        <th class="p-4 border-b">Sana</th>
+                        <th class="p-4 border-b">Mijoz</th>
+                        <th class="p-4 border-b">Pasport / PFL</th>
+                        <th class="p-4 border-b">Summa</th>
+                        <th class="p-4 border-b">Muddat</th>
+                        <th class="p-4 border-b">Tugash Sanasi</th>
+                        <th class="p-4 border-b">Holat</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-credits-body" class="text-sm text-gray-700"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Kreditga Olish - AutoTire</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+
+    <!-- Navbar nusxasi -->
+<!-- NAVBAR -->
+<nav class="bg-white shadow-sm sticky top-0 z-50 border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
+        <a href="index.html" class="flex items-center text-2xl font-bold text-gray-800 tracking-tight">AutoTire<span class="text-blue-600">.uz</span></a>
+        
+        <div class="hidden md:flex space-x-8">
+            <a href="index.html" class="text-blue-600 font-bold">Bosh sahifa</a>
+            <a href="catalog.html" class="text-gray-500 hover:text-blue-600 transition font-medium">Katalog</a>
+        </div>
+
+        <div class="flex items-center gap-5">
+            <!-- Savatcha -->
+            <a href="cart.html" class="relative text-gray-500 hover:text-blue-600 transition">
+                <i class="fa-solid fa-cart-shopping text-2xl"></i>
+                <span class="cart-badge absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center hidden border-2 border-white">0</span>
+            </a>
+
+            <!-- YANGI: Bildirishnoma (Bell) -->
+            <div id="notification-box" class="relative hidden">
+                <button onclick="toggleNotifDropdown()" class="relative text-gray-500 hover:text-blue-600 transition">
+                    <i class="fa-solid fa-bell text-2xl"></i>
+                    <span id="notif-badge" class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center hidden border-2 border-white">0</span>
+                </button>
+                <!-- Dropdown -->
+                <div id="notif-dropdown" class="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-2xl border border-gray-100 hidden z-50 overflow-hidden">
+                    <div class="p-3 border-b bg-gray-50 font-bold text-gray-700">Bildirishnomalar</div>
+                    <div id="notif-list" class="max-h-64 overflow-y-auto">
+                        <!-- JS to'ldiradi -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Login / Profile -->
+            <button onclick="openModal()" class="auth-btn bg-blue-50 text-blue-600 px-5 py-2.5 rounded-full font-bold hover:bg-blue-100 transition">Kirish</button>
+            <div class="user-profile hidden flex items-center gap-2 bg-gray-50 border border-gray-200 px-4 py-2 rounded-full cursor-pointer">
+                <span class="w-2 h-2 rounded-full bg-green-500"></span>
+                <span class="user-name-display font-bold text-sm text-gray-700">User</span>
+                <button onclick="logout()" class="text-gray-400 hover:text-red-500 ml-2"><i class="fa-solid fa-right-from-bracket"></i></button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+    <div class="flex-grow flex items-center justify-center p-4">
+        <div class="bg-white p-8 rounded-3xl shadow-xl w-full max-w-2xl fade-up">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-4">Bo'lib to'lash (Kredit)</h1>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Kalkulyator -->
+                <div>
+                    <h3 class="font-bold text-gray-500 mb-2 uppercase text-xs">Tovar haqida</h3>
+                    <div class="bg-blue-50 p-4 rounded-xl mb-4">
+                        <p class="text-lg font-bold text-gray-800" id="credit-product-name">Yuklanmoqda...</p>
+                        <p class="text-2xl font-bold text-blue-600 mt-2" id="credit-total">$0</p>
+                    </div>
+
+                    <h3 class="font-bold text-gray-500 mb-2 uppercase text-xs">Muddatni tanlang</h3>
+                    <select id="credit-months" onchange="calculateCredit()" class="w-full p-4 border rounded-xl bg-white mb-6 font-bold text-lg">
+                        <option value="3">3 oy</option>
+                        <option value="6">6 oy</option>
+                        <option value="12" selected>12 oy</option>
+                    </select>
+
+                    <div class="flex justify-between items-center border-t pt-4">
+                        <span class="text-gray-500">Oylik to'lov:</span>
+                        <span class="text-2xl font-bold text-green-600" id="monthly-pay">$0</span>
+                    </div>
+                    <div class="flex justify-between items-center mt-2 text-sm">
+                        <span class="text-gray-400">Jami qaytarish:</span>
+                        <span class="font-bold text-gray-600" id="total-pay">$0</span>
+                    </div>
+                </div>
+
+                <!-- Forma -->
+                <!-- Forma -->
+<form id="credit-form" onsubmit="submitCredit(event)" class="space-y-4 border-l pl-8 border-gray-100">
+    <h3 class="font-bold text-gray-800">Shaxsiy ma'lumotlar</h3>
+    
+    <!-- ID: cr-name QO'SHILDI -->
+    <div>
+        <label class="block text-xs font-bold text-gray-500 mb-1">Ism Familiya</label>
+        <input type="text" id="cr-name" required placeholder="Ismingizni kiriting" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:border-blue-500">
+    </div>
+
+    <!-- ID: cr-passport QO'SHILDI -->
+    <div>
+        <label class="block text-xs font-bold text-gray-500 mb-1">Pasport Seriya</label>
+        <input type="text" id="cr-passport" required placeholder="AA1234567" class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:border-blue-500">
+    </div>
+
+    <!-- ID: cr-pinfl QO'SHILDI -->
+    <div>
+        <label class="block text-xs font-bold text-gray-500 mb-1">JSHSHIR (PINFL)</label>
+        <input type="text" id="cr-pinfl" required placeholder="3200..." class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:border-blue-500">
+    </div>
+
+    <!-- ID: cr-phone QO'SHILDI -->
+    <div>
+        <label class="block text-xs font-bold text-gray-500 mb-1">Telefon raqam</label>
+        <input type="tel" id="cr-phone" required placeholder="+998 90..." class="w-full p-3 border rounded-xl bg-gray-50 outline-none focus:border-blue-500">
+    </div>
+    
+    <button type="submit" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 shadow-lg mt-4 transition transform active:scale-95">
+        Arizani yuborish
+    </button>
+    <p class="text-xs text-gray-400 text-center">Tugmani bosish orqali shartlarga rozilik bildirasiz.</p>
+</form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
